@@ -154,12 +154,12 @@ fn main() {
     };
 
     let mut weapon_inventory: Vec<Weapon> = Vec::new();
+    player.equip(&fists);
 
     weapon_inventory.push(stone_stick);
     weapon_inventory.push(fists);
 
-    player.equip(&fists);
-
+    
     'menu: loop {
         let mut game_state: GameState = GameState::Menu;
         
@@ -210,54 +210,28 @@ fn main() {
 
                             match type_to_equip {
                                 "weapon" => {
-                                    if player.weapon_equipped == false {
-                                        if weapon_inventory.len() > 0 {
-                                                let mut weapon = String::new();
-                                                println!("Please select an available weapon: ");
-                                                for item in &weapon_inventory {
-                                                    println!("{:?}", item)
-                                                }
-                                
-                                                io::stdin()
-                                                    .read_line(&mut weapon)
-                                                    .expect("Failed to read line. :(");
-                                
-                                                let weapon = weapon.to_ascii_lowercase();
-                                                let weapon: &str = weapon.trim();
-                                
-                                                for item in &weapon_inventory {
-                                                    if weapon == item.id {
-                                                        player.equip(item);
-                                                    }
-                                                }
-                                            
-                                        } else {println!("No weapons in inventory. :(");}
-                                        
-                                    } else if player.weapon.id == player.default_weapon.id {
-                                        if weapon_inventory.len() > 0 {
-
-                                            let mut weapon = String::new();
-                                            println!("Please select an available weapon: ");
-                                            for item in &weapon_inventory {
-                                                println!("{:?}", item)
+                                    if weapon_inventory.len() > 0 {
+                                        let mut weapon = String::new();
+                                        println!("Please select an available weapon: ");
+                                        for item in &weapon_inventory {
+                                            println!("{:?}", item)
+                                        }
+                        
+                                        io::stdin()
+                                            .read_line(&mut weapon)
+                                            .expect("Failed to read line. :(");
+                        
+                                        let weapon = weapon.to_ascii_lowercase();
+                                        let weapon: &str = weapon.trim();
+                        
+                                        for item in &weapon_inventory {
+                                            if weapon == item.id {
+                                                let weapon_equipped = player.weapon.clone();
+                                                player.unequip(&weapon_equipped);
+                                                player.equip(item);
                                             }
-                            
-                                            io::stdin()
-                                                .read_line(&mut weapon)
-                                                .expect("Failed to read line. :(");
-                            
-                                            let weapon = weapon.to_ascii_lowercase();
-                                            let weapon: &str = weapon.trim();
-                            
-                                            for item in &weapon_inventory {
-                                                if weapon == item.id {
-                                                    player.equip(item);
-                                                }
-                                            }
-                                        } else {println!("No weapons in inventory. :(");}
-                                    } else {
-                                        println!("Weapon already equipped!");
-                                    };
+                                        }
+                                    } else {println!("No weapons in inventory. :(");}
                                 },
                                 "quit" => break 'menu,
                                 _ => println!("Invalid option, your only option is weapon >:D"),
@@ -301,57 +275,31 @@ fn main() {
 
                 match type_to_equip {
                     "weapon" => {
-                        if player.weapon_equipped == false {
-                            if weapon_inventory.len() > 0 {
-                                    let mut weapon = String::new();
-                                    println!("Please select an available weapon: ");
-                                    for item in &weapon_inventory {
-                                        println!("{:?}", item)
-                                    }
-                    
-                                    io::stdin()
-                                        .read_line(&mut weapon)
-                                        .expect("Failed to read line. :(");
-                    
-                                    let weapon = weapon.to_ascii_lowercase();
-                                    let weapon: &str = weapon.trim();
-                    
-                                    for item in &weapon_inventory {
-                                        if weapon == item.id {
-                                            player.equip(item);
-                                        }
-                                    }
-                            } else {println!("No weapons in inventory. :(");}
-                            
-                        } else if player.weapon.id == player.default_weapon.id {
-                            if weapon_inventory.len() > 0 {
-
-                                let mut weapon = String::new();
-                                println!("Please select an available weapon: ");
-                                for item in &weapon_inventory {
-                                    println!("{:?}", item)
+                        if weapon_inventory.len() > 0 {
+                            let mut weapon = String::new();
+                            println!("Please select an available weapon: ");
+                            for item in &weapon_inventory {
+                                println!("{:?}", item)
+                            }
+            
+                            io::stdin()
+                                .read_line(&mut weapon)
+                                .expect("Failed to read line. :(");
+            
+                            let weapon = weapon.to_ascii_lowercase();
+                            let weapon: &str = weapon.trim();
+            
+                            for item in &weapon_inventory {
+                                if weapon == item.id {
+                                    let weapon_equipped = player.weapon.clone();
+                                    player.unequip(&weapon_equipped);
+                                    player.equip(item);
                                 }
-                
-                                io::stdin()
-                                    .read_line(&mut weapon)
-                                    .expect("Failed to read line. :(");
-                
-                                let weapon = weapon.to_ascii_lowercase();
-                                let weapon: &str = weapon.trim();
-                
-                                for item in &weapon_inventory {
-                                    if weapon == item.id {
-                                        player.equip(item);
-                                    }
-                                }
-                            } else {println!("No weapons in inventory. :(");}
-                        } else {
-                            println!("Weapon already equipped!");
-                        };
-                    },
-                    "quit" => break 'menu,
-                    _ => println!("Invalid option, your only option is weapon >:D"),
-                };
+                            }
+                        }
+                    }
+                    _ => {println!("Valid option not chosen."); println!("Your only option is weapon! >:)");},
+                }
             }
             "UNEQUIP" => {
                 let mut type_to_unequip = String::new();
