@@ -1,6 +1,7 @@
 use std::io;
 
 // COMMENT TO CHECK FOR GIT PUSH/COMMIT WORKING PLSSSSS
+// Second comment
 
 #[derive(Debug)]
 struct Player {
